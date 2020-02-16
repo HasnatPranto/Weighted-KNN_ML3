@@ -1,0 +1,5 @@
+C:\projectCodes\.NET\W_knn\W_KNN\bin\Debug\W_KNN.exe.config
+C:\projectCodes\.NET\W_knn\W_KNN\bin\Debug\W_KNN.exe
+C:\projectCodes\.NET\W_knn\W_KNN\bin\Debug\W_KNN.pdb
+C:\projectCodes\.NET\W_knn\W_KNN\obj\Debug\W_KNN.exe
+C:\projectCodes\.NET\W_knn\W_KNN\obj\Debug\W_KNN.pdb
