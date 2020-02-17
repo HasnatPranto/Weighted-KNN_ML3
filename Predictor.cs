@@ -108,7 +108,7 @@ namespace W_KNN
                 }
                 catch (System.ArgumentOutOfRangeException e)
                 {
-                    Console.WriteLine("Process finished");
+                    Console.WriteLine("Run me again");
                 }
 
                 for (int i = 0; i < clsNwet.Count; i++) {
