@@ -74,29 +74,41 @@ namespace W_KNN
 
                 }
 
-                for (int i = 0; i < k; i++) {
-                    sum += classArray[i].weight;
-                }
-                
-                for (int i = 0; i < k; i++)
+                try
                 {
-                   classArray[i].weight/= sum;               
-                }
-                bool found;
-
-                for (int i = 0; i < k; i++) {
-                    
-                    found = false;
-
-                    for (int j = 0; j < clsNwet.Count; j++) {
-
-                        if (String.Equals(clsNwet.Keys.ElementAt(j),classArray[i].cls)) {
-
-                            found = true;
-                            clsNwet[clsNwet.Keys.ElementAt(j)] += classArray[i].weight;
-                        }
-                        if(found) break;
+                    for (int i = 0; i < k; i++)
+                    {
+                        sum += classArray[i].weight;
                     }
+
+
+                    for (int i = 0; i < k; i++)
+                    {
+                        classArray[i].weight /= sum;
+                    }
+                    bool found;
+
+                    for (int i = 0; i < k; i++)
+                    {
+
+                        found = false;
+
+                        for (int j = 0; j < clsNwet.Count; j++)
+                        {
+
+                            if (String.Equals(clsNwet.Keys.ElementAt(j), classArray[i].cls))
+                            {
+
+                                found = true;
+                                clsNwet[clsNwet.Keys.ElementAt(j)] += classArray[i].weight;
+                            }
+                            if (found) break;
+                        }
+                    }
+                }
+                catch (System.ArgumentOutOfRangeException e)
+                {
+                    Console.WriteLine("Process finished");
                 }
 
                 for (int i = 0; i < clsNwet.Count; i++) {
