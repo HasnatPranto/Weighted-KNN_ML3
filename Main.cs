@@ -10,6 +10,7 @@ public class Main
     string[] entry;
     List<List<string>> data = new List<List<string>>();
     List<List<string>> testData = new List<List<string>>();
+    List<List<string>> dummyData = new List<List<string>>();
     SortedSet<string> classes = new SortedSet<string>();
     int fold, k;
     public Main()
@@ -19,7 +20,7 @@ public class Main
         k = Convert.ToInt32(Console.ReadLine());
         
         arrangeData();
-        setTrainTest();
+        run();
         new Predictor(data, testData, k, classes);
 
     }
@@ -67,19 +68,40 @@ public class Main
         }
 
     }
-    public void setTrainTest() {
+    public void run() {
 
         Random rnd=new Random();
-        int ind, lim = data.Count/fold;
-    
-        for (int i = 0; i < lim; i++) {
+        int ind, foldElem = data.Count/fold, round=1;
+        double myAccuracy = 0;
 
-            ind = rnd.Next(1, data.Count);
+        for (int i = 0; i < data.Count; i++) {
+            ind = rnd.Next(1, data.Count - 1);
             
-            testData.Add(data[ind]);
-            
-            data.RemoveAt(ind);
+            data.Insert(0,data[ind]);
+            data.RemoveAt(ind + 1);
         }
+
+        for (int run = 0; run < fold; run++) {
+
+            foreach (List<string> str in data) dummyData.Add(str);
+
+            for (int i = run * fold; i < (run * fold) + foldElem; i++) {
+
+                testData.Add(dummyData[i]);
+                dummyData.RemoveAt(i);
+            }
+            Predictor p=new Predictor(dummyData, testData, k, classes);
+            
+            Console.WriteLine("\n"+round++ +":");
+            
+            myAccuracy += p.beginTest();
+            
+            testData.Clear();
+            
+            dummyData.Clear();
+        }
+        Console.WriteLine("Net Accuracy: {0}%", Math.Round(myAccuracy/fold,5)*100);
+       
     }
 } 
 

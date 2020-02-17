@@ -17,6 +17,7 @@ namespace W_KNN
         SortedDictionary<string,double> clsNwet = new SortedDictionary<string, double>();
         List<List<string>> train, test;
         int k;
+        
         public Predictor(List<List<string>> train, List<List<string>> test,int k, SortedSet<string> classes) {
             this.train = train;
             this.test = test;
@@ -25,13 +26,13 @@ namespace W_KNN
             foreach (string str in classes) {
                 clsNwet.Add(str,0.0);
             }
-            beginTest();
+            //beginTest();
         }
 
-        public void beginTest() {
+        public double beginTest() {
 
             double sum,accuracy=0;
-           
+
             ClsWt myClass;
             ClsWt prdClass = new ClsWt() ;
             var classArray = new List<ClsWt>();
@@ -109,7 +110,10 @@ namespace W_KNN
                 if (String.Equals(prdClass.cls, te[8]))
                     accuracy++;
             }
-            Console.WriteLine("\nNet Accuracy: {0}%", Math.Round(accuracy/(test.Count)*100,2));
+            accuracy = Math.Round(accuracy / (test.Count),5);
+            Console.WriteLine("\nAccuracy: {0}%",accuracy*100);
+            return accuracy;
+            
         }
 
         public double getDistance(List<string> testPoint, List<string> knownPoint) {
