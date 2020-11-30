@@ -11,7 +11,7 @@ public class Main
     List<List<string>> data = new List<List<string>>();
     List<List<string>> testData = new List<List<string>>();
     List<List<string>> dummyData = new List<List<string>>();
-    SortedSet<string> classes = new SortedSet<string>();
+    HashSet<string> classes = new HashSet<string>();
     int fold, k;
     public Main()
     {
@@ -27,7 +27,7 @@ public class Main
 
     public void arrangeData()
     {
-        string path = @"C:\projectCodes\.NET\W_knn\W_KNN\ecoli.data", line;
+        string path = @"C:\Codebase\.NET\W_knn\W_KNN\ecoli.data", line;
 
         StreamReader reader = new StreamReader(path);
 
@@ -94,14 +94,18 @@ public class Main
             
             Console.WriteLine("\n"+round++ +":");
             
-            myAccuracy += p.beginTest();
+            p.beginTest();
             
             testData.Clear();
             
             dummyData.Clear();
         }
-        Console.WriteLine("Net Accuracy: {0}%", Math.Round(myAccuracy/fold,5)*100);
-       
+        
+        Console.WriteLine("\nNet Accuracy: {0}%", Math.Round(validationMetrices.accuracy/fold,5)*100);
+        Console.WriteLine("\nNet Precision: {0}%", Math.Round(validationMetrices.precision / fold, 5) * 100);
+        Console.WriteLine("\nNet Recall: {0}%", Math.Round(validationMetrices.recall / fold, 5) * 100);
+        Console.WriteLine("\nNet f-measure: {0}%", Math.Round(validationMetrices.f1 / fold, 5) * 100);
+
     }
 } 
 

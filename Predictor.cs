@@ -14,14 +14,17 @@ namespace W_KNN
     }
     class Predictor
     {
+      
         SortedDictionary<string,double> clsNwet = new SortedDictionary<string, double>();
+        HashSet<string> classes;
         List<List<string>> train, test;
         int k;
-        
-        public Predictor(List<List<string>> train, List<List<string>> test,int k, SortedSet<string> classes) {
+       
+        public Predictor(List<List<string>> train, List<List<string>> test,int k, HashSet<string> classes) {
             this.train = train;
             this.test = test;
             this.k = k;
+            this.classes = classes;
 
             foreach (string str in classes) {
                 clsNwet.Add(str,0.0);
@@ -29,10 +32,11 @@ namespace W_KNN
             //beginTest();
         }
 
-        public double beginTest() {
+        public void beginTest() {
 
-            double sum,accuracy=0;
-
+            int[,] crossMatrix = new int[classes.Count, classes.Count];
+            CrossValidation cxv = new CrossValidation();
+            double sum;
             ClsWt myClass;
             ClsWt prdClass = new ClsWt() ;
             var classArray = new List<ClsWt>();
@@ -42,7 +46,7 @@ namespace W_KNN
                 sum = 0;
                 prdClass.cls = null;
                 prdClass.weight = 0;
-
+                
                 classArray.Clear();
 
                 for (int i = 0; i < clsNwet.Count; i++) {
@@ -108,7 +112,7 @@ namespace W_KNN
                 }
                 catch (System.ArgumentOutOfRangeException e)
                 {
-                    Console.WriteLine("Run me again");
+                    Console.WriteLine("");
                 }
 
                 for (int i = 0; i < clsNwet.Count; i++) {
@@ -118,13 +122,42 @@ namespace W_KNN
                     }
                 }
                 Console.WriteLine("Predicted Class for {0} is {1} whereas it is {2}", te[0], prdClass.cls, te[8]);
+                
+                int ci = -1, cj = -1;
+                bool bi = false, bj = false;
 
+                foreach (var setItem in classes) {
+
+                    if(!bi)
+                        ci++;
+                    if(!bj)
+                        cj++;
+
+                    if (setItem.Equals(prdClass.cls)) bi = true;
+
+                    if (setItem.Equals(te[8])) bj = true;
+                        
+                }
                 if (String.Equals(prdClass.cls, te[8]))
-                    accuracy++;
+                {
+                    crossMatrix[ci, ci]++;
+                }
+                else {
+
+                    crossMatrix[ci, cj]++;
+                }
+                  //  accuracy++;
             }
-            accuracy = Math.Round(accuracy / (test.Count),5);
-            Console.WriteLine("\nAccuracy: {0}%",accuracy*100);
-            return accuracy;
+            double accuracy = Math.Round(cxv.getAccuracy(crossMatrix,test.Count),5);
+            Console.WriteLine("\nAccuracy: {0}%", accuracy * 100);
+            double precision = Math.Round(cxv.getPrecision(crossMatrix, classes.Count), 5);
+            Console.WriteLine("\nPrecision: {0}%", precision * 100);
+            double recall = Math.Round(cxv.getRecall(crossMatrix, classes.Count), 5);
+            Console.WriteLine("\nRecall: {0}%", recall * 100);
+            double f1 = Math.Round(cxv.getF1(crossMatrix, classes.Count), 5);
+            Console.WriteLine("\nf-measure: {0}%", f1 * 100);
+          
+            //return accuracy;
             
         }
 
