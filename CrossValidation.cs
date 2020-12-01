@@ -22,11 +22,8 @@ namespace W_KNN
             double result = 0;
 
             for (int i = 0; i < crossMat.GetLength(0); i++)
-            {
-
                 result += crossMat[i, i];
 
-            }
             result /= testCount;
 
             validationMetrices.accuracy += result;
@@ -41,19 +38,16 @@ namespace W_KNN
             for (int i = 0; i < crossMat.GetLength(0); i++)
             {
                 denom = 0;
-                
-                for (int j = 0; j < crossMat.GetLength(1); j++) {
 
+                for (int j = 0; j < crossMat.GetLength(1); j++)
                     denom += crossMat[i, j];
 
-                }
                 if (denom == 0)
                     classCount -= 1;
                 else
                     result += crossMat[i, i] / denom;
-                
             }
-           
+
             result /= classCount;
 
             validationMetrices.precision += result;
@@ -66,18 +60,15 @@ namespace W_KNN
         {
 
             double result = 0, denom;
-           
+
             for (int i = 0; i < crossMat.GetLength(0); i++)
             {
                 denom = 0;
 
                 for (int j = 0; j < crossMat.GetLength(1); j++)
-                {
-
                     denom += crossMat[j, i];
 
-                }
-                if (denom == 0) 
+                if (denom == 0)
                     classCount-=1;
                 else
                     result += crossMat[i, i] / denom;
@@ -114,7 +105,6 @@ namespace W_KNN
                     continue;
                 else
                     recall = crossMat[i, i] / denomR;
-
 
                 result += 2 * precision * recall / (precision + recall);
             }
