@@ -64,10 +64,8 @@ namespace W_KNN
                     {
                         for (int i = 0; i < classArray.Count; i++)
                         {
-
                             if (classArray[i].weight < myClass.weight)
                             {
-
                                 if (classArray.Count == k) 
                                     classArray.RemoveAt(k - 1);
 
@@ -84,8 +82,7 @@ namespace W_KNN
                     {
                         sum += classArray[i].weight;
                     }
-
-
+                    
                     for (int i = 0; i < k; i++)
                     {
                         classArray[i].weight /= sum;
@@ -94,19 +91,18 @@ namespace W_KNN
 
                     for (int i = 0; i < k; i++)
                     {
-
-                        found = false;
+                       found = false;
 
                         for (int j = 0; j < clsNwet.Count; j++)
                         {
-
                             if (String.Equals(clsNwet.Keys.ElementAt(j), classArray[i].cls))
                             {
-
                                 found = true;
                                 clsNwet[clsNwet.Keys.ElementAt(j)] += classArray[i].weight;
                             }
-                            if (found) break;
+                            
+                            if (found) 
+                                break;
                         }
                     }
                 }
@@ -121,6 +117,7 @@ namespace W_KNN
                         prdClass.weight = clsNwet[clsNwet.Keys.ElementAt(i)];
                     }
                 }
+                
                 Console.WriteLine("Predicted Class for {0} is {1} whereas it is {2}", te[0], prdClass.cls, te[8]);
                 
                 int ci = -1, cj = -1;
